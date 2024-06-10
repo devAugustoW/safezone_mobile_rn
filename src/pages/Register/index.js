@@ -17,8 +17,8 @@ import {
   Input,
   DescriptionInput,
   BtnCamera,
+  BtnAndImageView,
   ImageView,
-  Photo,
   BtnText,
   ButtonSubmit,
   CameraText 
@@ -60,8 +60,6 @@ const Register = () => {
       console.log('Erro na requisição fetch ', err)
 
     })
-
-
   }
 
   // Tirar foto
@@ -163,17 +161,19 @@ const Register = () => {
           onChangeText={setDescription} />
       </AreaInput>
 
-      <BtnCamera onPress={pickImage}>
-        <Feather name='camera' color='#fff' size={45} />
-        <CameraText>
-          Anexar
-        </CameraText>
-      </BtnCamera>
+      <BtnAndImageView>
+        <BtnCamera onPress={pickImage}>
+          <Feather name='camera' color='#fff' size={45} />
+          <CameraText>
+            Anexar
+          </CameraText>
+        </BtnCamera>
 
-      {image && (
-        <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
-      )}
-  
+        {image && (
+          <ImageView source={{ uri: image }} style={{ width: 200, height: 200 }} />
+        )}
+      </BtnAndImageView>
+
       <ButtonSubmit>
         <BtnText onPress={handleRegister}>Cadastrar</BtnText>
       </ButtonSubmit>

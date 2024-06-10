@@ -47,18 +47,25 @@ export const DescriptionInput = styled.TextInput`
    elevation: 2;
 `;
 
+export const BtnAndImageView = styled.View`
+   flex-direction: row;
+   justify-content: space-between;
+   align-items: center;
+   width: 100%;
+   padding-left: 20px;
+   padding-right: 20px;
+
+`;
+
 export const BtnCamera = styled.TouchableOpacity`
    background-color: #f48604;
    padding: 15px 25px;
    border-radius: 8px;
    align-self: flex-start;
-   margin-top: 15px;
-   margin-left: 18px;
-   margin-bottom: 15px;
+   margin-top: 5px;
+   margin-bottom: 10px;
    elevation: 2;
 `;
-
-
 
 export const CameraText = styled.Text`
  color: #fff;
