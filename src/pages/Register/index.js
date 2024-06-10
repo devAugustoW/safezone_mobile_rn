@@ -45,21 +45,24 @@ const Register = () => {
 
     console.log('Console do data: ', data)
 
-    fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
-      method: 'post',
-      body: data,
-    })
-    .then((res) => res.json())
-    .then((data) => {
-      setImage(data.url);
+    try {
+      const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
+        method: 'post',
+        body: data,
+      });
 
-      console.log('data.url: ', data.url)
+      const result = await res.json();
+      setImage(result.url);
+      console.log('Imagem com url: ', result.url);
 
-    })
-    .catch((err) => {
-      console.log('Erro na requisição fetch ', err)
+      return image;
 
-    })
+    } catch (err) {
+      console.log('Erro na requisição fetch ', err);
+
+    }
+
+    return image;
   }
 
   // Tirar foto
@@ -77,15 +80,10 @@ const Register = () => {
     // Abrir a câmera
     const photo = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
+      allowsEditing: false,
       aspect: [1, 1],
       quality: 0.5,
     });
-
-    console.log('Photo assets:', photo.assets);
-    console.log('Photo assets.uri:', photo.assets[0].uri);
-    console.log('Photo assets.mimeType:', photo.assets[0].mimeType);
-    console.log('Photo assets.fileName:', photo.assets[0].fileName); 
 
     let newFile = {
       uri: photo.assets[0].uri,
@@ -93,46 +91,64 @@ const Register = () => {
       name: photo.assets[0].fileName,
     }
 
-    console.log('NewFile indo para Upload', newFile)
-
     photoUpload(newFile);
   }
   
   // Pegar a Geolocalização
   const getLocation = async() => {
+    try {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        setError('Permissão de Geolocalização negada!');
+        console.log('Permissão de Geolocalização negada!');
+        return null;
+      }
 
-    let { status } = await Location.requestForegroundPermissionsAsync();
+      let locationPoint = await Location.getCurrentPositionAsync({});
+      const locationData = {
+        latitude: locationPoint.coords.latitude,
+        longitude: locationPoint.coords.longitude,
+      };
 
-    if (status !== 'granted') {
-      setErrorMsg('Permissão de Geolocalização negada!');
-      return;
+      setLocation(locationData);
+      return locationData;
+
+    } catch (err) {
+      setError('Erro ao obter localização!');
+      console.log('Erro ao obter localização!', err);
+      return null;
 
     }
-
-    let locationPoint = await Location.getCurrentPositionAsync({});
-    setLocation({
-      latitude: locationPoint.coords.latitude,
-      longitude: locationPoint.coords.longitude,
-    });
-
-    return location
   }
 
   // Cadastrar ponto de risco
-  const handleRegister = () => {
-    console.log(ref);
-    console.log(title);
+  const handleRegister = async() => {
+    console.log('Entrou no handleLocation')
 
-    /* console.log(Latitude e Longitude) */
-    getLocation()
-    console.log(location)
-    console.log(description);
+    try{
+      const currentLocation = await getLocation();
+      if (!currentLocation) {
+        console.log('Erro no Get Location')
+        return;
+      }
 
-    /* console.log(photo) */
-    pickImage();
-    console.log(newFile);
+      const riskPoint = {
+        ref: ref,
+        title: title,
+        location: currentLocation,
+        description: description,
+        status: 'false',
+        image: image,
+      }
 
-    /* console.log('uploado OK') */
+      console.log('console do objeto riskPoint', riskPoint)
+
+    } catch(err) {
+      console.log('Erro na requisição handleRegister', err)
+
+    }
+
+    
   }
 
 
@@ -170,7 +186,7 @@ const Register = () => {
         </BtnCamera>
 
         {image && (
-          <ImageView source={{ uri: image }} style={{ width: 200, height: 200 }} />
+          <ImageView source={{ uri: image }} />
         )}
       </BtnAndImageView>
 

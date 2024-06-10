@@ -30,7 +30,7 @@ export default function SignIn(){
       console.log(user)
       
       try{
-         const response = await axios.post('http://192.168.1.7:3333/login', user)
+         const response = await axios.post('http://192.168.0.174:3333/login', user)
 
 
          if (response.data){

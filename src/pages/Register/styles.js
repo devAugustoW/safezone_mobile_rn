@@ -11,11 +11,8 @@ export const Titulo = styled.Text`
    width: 90%;
    color: #959595;
    font-size: 24px;
-
    margin-top: 10px;
    margin-bottom: 15px;
-
-   
 `;
 
 export const AreaInput = styled.View`
@@ -49,12 +46,10 @@ export const DescriptionInput = styled.TextInput`
 
 export const BtnAndImageView = styled.View`
    flex-direction: row;
-   justify-content: space-between;
-   align-items: center;
+   justify-content: space-between;   
    width: 100%;
    padding-left: 20px;
    padding-right: 20px;
-
 `;
 
 export const BtnCamera = styled.TouchableOpacity`
@@ -62,7 +57,7 @@ export const BtnCamera = styled.TouchableOpacity`
    padding: 15px 25px;
    border-radius: 8px;
    align-self: flex-start;
-   margin-top: 5px;
+
    margin-bottom: 10px;
    elevation: 2;
 `;
@@ -73,9 +68,10 @@ export const CameraText = styled.Text`
 
 export const ImageView = styled.Image`
    width: 80%;
-   height: 140px;
+   height: 180px;
    objectFit: contain;
-   z-index: 100;
+   margin-left: 32px;
+   align-self: flex-end;
 `
 
 export const ButtonSubmit = styled.TouchableOpacity`

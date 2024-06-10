@@ -1,6 +1,13 @@
 import React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { Background, StyledMapView, BorderTab, Btn, ButtonIcon, BorderLogo, BtnText } from './styles';
+import { 
+   Background, 
+   StyledMapView, 
+   BorderTab, 
+   Btn, 
+   ButtonIcon, 
+   BorderLogo, 
+   BtnText } from './styles';
 import { useNavigation } from '@react-navigation/native';
 import Feather from 'react-native-vector-icons/Feather';
 
@@ -18,10 +25,8 @@ export default function Home(){
                longitude:-35.0109399,
                latitudeDelta:0.02,
                longitudeDelta:0.02,
-            }}
-         />
+            }}/>
 
-         
          <BorderTab>
             <Btn
              activeOpacity={0.7}
@@ -31,10 +36,8 @@ export default function Home(){
                </ButtonIcon>
                <BtnText>Listar PR</BtnText>
             </Btn>
-
             
             <BorderLogo source={require('../../assets/logo.png')}/>
-          
 
             <Btn
              activeOpacity={0.7}
