@@ -40,8 +40,8 @@ const Register = () => {
 
     const data = new FormData();
     data.append('file', image);
-    data.append('upload_preset', 'CLOUDINARY_UPLOAD_PRESET');
-    data.append('cloud_name', 'CLOUDINARY_CLOUD_NAME');
+    data.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+    data.append('cloud_name', CLOUDINARY_CLOUD_NAME);
 
     console.log('Console do data: ', data)
 
