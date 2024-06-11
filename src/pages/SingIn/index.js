@@ -48,7 +48,6 @@ export default function SignIn(){
          Alert.alert('Error', 'Requisição falhou!');
       }
 
-      
    }
 
    return(

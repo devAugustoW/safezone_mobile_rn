@@ -34,6 +34,8 @@ const Register = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
 
+  const navigation = useNavigation();
+
 
   //fazer upload de imagem
   const photoUpload = async (image) => {
@@ -177,16 +179,22 @@ const Register = () => {
         console.log('Response da API:', response.data);
       }
 
+      console.group('Zerando os estdos')
+
+      // Zerar estados
+      setImage(null);
+      setLocation({ latitude: null, longitude: null });
+      setRef('');
+      setTitle('');
+      setDescription('');
+
+      console.group('indo para home')
+
+      navigation.navigate('Home');      
+
     } catch(error){
       console.log('Erro na requisição para API', error);
     }   
-
-    setRef('');
-    setTitle('');
-    setLocation('');
-    setDescription('');
-    setImage(null);
-
   }
 
     
@@ -197,12 +205,14 @@ const Register = () => {
       <AreaInput>
         <Input placeholder="Referência do PR"
           name={ref}
+          value={ref}
           onChangeText={setRef} />
       </AreaInput>
 
       <AreaInput>
         <Input placeholder="Título do PR"
           name={title}
+          value={title}
           onChangeText={setTitle} />
       </AreaInput>
 
@@ -212,6 +222,7 @@ const Register = () => {
           multiline={true}
           numberOfLines={8}
           name={description}
+          value={description}
           onChangeText={setDescription} />
       </AreaInput>
 
