@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import { Cloudinary } from "@cloudinary/url-gen";
 import { 
@@ -36,24 +38,24 @@ const Register = () => {
   //fazer upload de imagem
   const photoUpload = async (image) => {
 
-    console.log('Entrou função upload')
+    console.log('Entrou função upload', image)
 
-    const data = new FormData();
-    data.append('file', image);
-    data.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
-    data.append('cloud_name', CLOUDINARY_CLOUD_NAME);
+    const dataImage = new FormData();
+    dataImage.append('file', image);
+    dataImage.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+    dataImage.append('cloud_name', CLOUDINARY_CLOUD_NAME);
 
-    console.log('Console do data: ', data)
+    console.log('Console do data.append');
 
     try {
       const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
         method: 'post',
-        body: data,
+        body: dataImage,
       });
 
-      const result = await res.json();
-      setImage(result.url);
-      console.log('Imagem com url: ', result.url);
+      const resultImage = await res.json();
+      setImage(resultImage.url);
+      console.log('Imagem com url: ', resultImage.url);
 
       return image;
 
@@ -64,6 +66,7 @@ const Register = () => {
 
     return image;
   }
+
 
   // Tirar foto
   const pickImage  = async() => {
@@ -85,11 +88,15 @@ const Register = () => {
       quality: 0.5,
     });
 
+    console.log('Acho que salvou a foto', photo)
+
     let newFile = {
       uri: photo.assets[0].uri,
       type: photo.assets[0].mimeType,
       name: photo.assets[0].fileName,
     }
+
+    console.log('Dados principais de photo:', newFile);
 
     photoUpload(newFile);
   }
@@ -117,27 +124,38 @@ const Register = () => {
       setError('Erro ao obter localização!');
       console.log('Erro ao obter localização!', err);
       return null;
-
     }
   }
 
-  // Cadastrar ponto de risco
+  // Cadastrar ponto de risco -> Montar o Objeto Ponto de Risco
   const handleRegister = async() => {
+    let riskPoint = {};
+
     console.log('Entrou no handleLocation')
 
+    // Montar o objeto
     try{
-      const currentLocation = await getLocation();
-      if (!currentLocation) {
-        console.log('Erro no Get Location')
-        return;
+      const locationData = await getLocation();
+
+      console.log('locationData: ', locationData);
+
+
+      if (locationData){
+        const { latitude, longitude } = locationData;
+
       }
 
-      const riskPoint = {
+      console.log('locationData OK!')
+
+      riskPoint = {
         ref: ref,
         title: title,
-        location: currentLocation,
+        location: {
+          latitude: locationData.latitude,
+          longitude: locationData.longitude
+        },
         description: description,
-        status: 'false',
+        status: false,
         image: image,
       }
 
@@ -146,12 +164,32 @@ const Register = () => {
     } catch(err) {
       console.log('Erro na requisição handleRegister', err)
 
-    }
+    } 
 
-    
+    console.log('Chegando na requisição para API')
+
+    // Fazer a chamada para enviar o Objeto para API
+    try{
+      const response = await axios.post('http://192.168.1.9:3333/create', riskPoint );
+
+      if (response.data){
+        Alert.alert('Ponto de Risco criado com sucesso!');
+        console.log('Response da API:', response.data);
+      }
+
+    } catch(error){
+      console.log('Erro na requisição para API', error);
+    }   
+
+    setRef('');
+    setTitle('');
+    setLocation('');
+    setDescription('');
+    setImage(null);
+
   }
 
-
+    
   return (
     <RegisterContainer>
       <Titulo>Cadastro de Ponto de Risco</Titulo>

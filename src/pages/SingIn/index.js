@@ -22,6 +22,7 @@ export default function SignIn(){
 
    const handleLogin = async() => {
       
+
       const user = {
          email,
          password
@@ -30,7 +31,7 @@ export default function SignIn(){
       console.log(user)
       
       try{
-         const response = await axios.post('http://192.168.0.174:3333/login', user)
+         const response = await axios.post('http://192.168.1.9:3333/login', user)
 
 
          if (response.data){
@@ -38,17 +39,16 @@ export default function SignIn(){
             Alert.alert('Login realizado com sucesso');
 
             navigation.navigate('Home');
-
          } else {
             console.log('Login falhou.', response.data.message);
             Alert.alert('Login falhou.', response.data.message);
-
          }
       } catch(error){
          console.log('Error', 'Requisição falhou!', error.message, error.response);
          Alert.alert('Error', 'Requisição falhou!');
-
       }
+
+      
    }
 
    return(
