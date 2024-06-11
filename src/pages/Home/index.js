@@ -7,7 +7,8 @@ import {
    Btn, 
    ButtonIcon, 
    BorderLogo, 
-   BtnText } from './styles';
+   BtnText 
+} from './styles';
 import { useNavigation } from '@react-navigation/native';
 import Feather from 'react-native-vector-icons/Feather';
 
