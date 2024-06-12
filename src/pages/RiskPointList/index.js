@@ -15,7 +15,7 @@ const RiskPointList = () => {
 
   const fetchRiskPoints = async () => {
     try {
-      const response = await axios.get('http://192.168.1.9:3333/getriskpoints'); 
+      const response = await axios.get('http://192.168.1.2:3333/getriskpoints'); 
       setRiskPoints(response.data);
 
       console.log('Página RiskPointList - Pontos de Risco', response.data);

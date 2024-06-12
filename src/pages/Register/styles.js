@@ -74,7 +74,7 @@ export const ImageView = styled.Image`
    align-self: flex-end;
 `
 
-export const ButtonSubmit = styled.TouchableOpacity`
+export const Button = styled.TouchableOpacity`
    background-color: #f48604;
    width: 90%;
    border-radius: 8px;

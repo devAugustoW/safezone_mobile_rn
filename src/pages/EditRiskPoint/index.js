@@ -189,7 +189,7 @@ const EditRiskPoint = () => {
     console.log('Chegando na requisição para atualizar Ponto de Risco', riskPoint);
 
     try{
-      const response = await axios.put('http://192.168.1.9:3333/update', riskPoint, {
+      const response = await axios.put('http://192.168.1.2:3333/update', riskPoint, {
         method: 'PUT', 
       });
 

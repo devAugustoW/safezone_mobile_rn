@@ -22,7 +22,7 @@ import {
   BtnAndImageView,
   ImageView,
   BtnText,
-  ButtonSubmit,
+  Button,
   CameraText 
 } from './styles.js';
 
@@ -172,7 +172,7 @@ const Register = () => {
 
     // Fazer a chamada para enviar o Objeto para API
     try{
-      const response = await axios.post('http://192.168.1.9:3333/create', riskPoint );
+      const response = await axios.post('http://192.168.1.2:3333/create', riskPoint );
 
       if (response.data){
         Alert.alert('Ponto de Risco criado com sucesso!');
@@ -239,9 +239,9 @@ const Register = () => {
         )}
       </BtnAndImageView>
 
-      <ButtonSubmit>
-        <BtnText onPress={handleRegister}>Cadastrar</BtnText>
-      </ButtonSubmit>
+      <Button onPress={handleRegister}>
+        <BtnText>Cadastrar</BtnText>
+      </Button>
     </RegisterContainer>
   )
 }
