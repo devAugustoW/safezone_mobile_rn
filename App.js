@@ -7,6 +7,7 @@ import Home from './src/pages/Home';
 import Register from './src/pages/Register';
 import RiskPointList from './src/pages/RiskPointList';
 import EditRiskPoint from './src/pages/EditRiskPoint';
+import ViewRiskPoint from './src/pages/ViewRiskPoint';
 
 const Stack = createNativeStackNavigator();
 
@@ -47,6 +48,14 @@ function App() {
         <Stack.Screen 
           name="EditRiskPoint" 
           component={EditRiskPoint} 
+          options={{
+            headerShown: false,
+          }} 
+        />
+
+        <Stack.Screen 
+          name="ViewRiskPoint" 
+          component={ViewRiskPoint} 
           options={{
             headerShown: false,
           }} 

@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useNavigation } from '@react-navigation/native';
 import { Marker } from 'react-native-maps';
 import { StatusBar } from 'expo-status-bar';
 import { 
@@ -10,8 +12,7 @@ import {
    BorderLogo, 
    BtnText 
 } from './styles';
-import axios from 'axios';
-import { useNavigation } from '@react-navigation/native';
+
 import Feather from 'react-native-vector-icons/Feather';
 
 
@@ -23,10 +24,14 @@ export default function Home(){
       console.log('Entrou no fetch para buscar locations')
 
       try {
-         const response = await axios.get('http://192.168.1.9:3333/getlocations'); 
-         setRiskPointLocations(response.data);
+         const response = await axios.get('http://192.168.1.2:3333/getlocations'); 
 
-         console.log('RiskPointLocations: ', response.data)
+
+         //setRiskPointLocations(response);
+
+         console.log('Locationde de response.data: ', response.data)
+         
+         setRiskPointLocations(response.data)
 
       } catch (error) {
          console.error('Erro ao buscar pontos de risco:', error);
@@ -34,12 +39,12 @@ export default function Home(){
       }
 
    };
-
+   /*
    useEffect(() => {
       fetchRiskPoints();
-      
+      console.log('Estado do riskPointLocations presente:', riskPointLocations);
    }, []);
-
+   */
    return (
       <Background>
          <StatusBar backgroundColor='#CCCCCC' />

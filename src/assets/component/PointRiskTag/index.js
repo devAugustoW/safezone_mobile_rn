@@ -1,34 +1,36 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigation } from '@react-navigation/native';
 import Feather from 'react-native-vector-icons/Feather';
 
 import {
    Tag,
-   TextArea,
-   IdentView,
    Identify,
-   Title,
-   Description,
+   TitleView,
+   IdentView,
+   DescriptionInput,
    ButtonView,
    ButtonArea,
    ButtonAreaWithBorders
 } from './styles'
 
 
-const PointRiskTag = () => {
+const PointRiskTag = ({ refValue, title, description }) => {
   const navigation = useNavigation();
 
   return (
    <Tag>
-      <Identify>Identificação</Identify>
-      <Title>Titulo do PR</Title>
+      <Identify>{refValue}</Identify>
+      <TitleView>{title}</TitleView>
 
       <IdentView>
-        <Description>Descrição do ponto de Risco</Description>
+        <DescriptionInput
+          multiline={true}
+          numberOfLines={4}
+          value={description}
+          editable={false} />
 
         <ButtonView>
-
-          <ButtonArea >
+          <ButtonArea onPress={() => navigation.navigate('ViewRiskPoint')}>
             <Feather name='x' color='#000' size={35} />
           </ButtonArea>
 
