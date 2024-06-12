@@ -71,6 +71,7 @@ export const ImageView = styled.Image`
   height: 220px;
   objectFit: contain;
   text-align: right;
+  border-radius: 6px;
 `
 
 export const Button = styled.TouchableOpacity`

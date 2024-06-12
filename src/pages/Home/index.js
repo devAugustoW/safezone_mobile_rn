@@ -39,12 +39,12 @@ export default function Home(){
       }
 
    };
-   /*
+   
    useEffect(() => {
       fetchRiskPoints();
       console.log('Estado do riskPointLocations presente:', riskPointLocations);
    }, []);
-   */
+   
    return (
       <Background>
          <StatusBar backgroundColor='#CCCCCC' />

@@ -71,11 +71,33 @@ export const CameraText = styled.Text`
  color: #fff;
 `;
 
+export const BtnView = styled.View`
+   justify-content: space-between;
+`;
+
+
+export const BtnDelete = styled.TouchableOpacity`
+   background-color: #f48604;
+   padding: 15px 25px;
+   border-radius: 8px;
+   align-self: flex-start;
+   justify-content: center;
+
+   margin-bottom: 10px;
+   elevation: 2;
+
+`;
+
+export const DeleteText = styled.Text`
+   color: #fff;
+`;
+
 export const ImageView = styled.Image`
   width: 46%;
   height: 260px;
   objectFit: contain;
   text-align: right;
+  border-radius: 6px;
 `
 
 export const ButtonSubmit = styled.TouchableOpacity`

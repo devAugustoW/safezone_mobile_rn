@@ -21,7 +21,6 @@ const PointRiskTag = ({ id, refValue, title, description, image, location }) => 
   const navigation = useNavigation();
 
   const deleteRiskPoint = async () => {
-
     try {
       // Adiciona uma mensagem de confirmação antes de deletar
       Alert.alert(

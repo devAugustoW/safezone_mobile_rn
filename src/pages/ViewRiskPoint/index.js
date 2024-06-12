@@ -30,6 +30,7 @@ const ViewRiskPoint = () => {
   return (
     <ViewRiskPointContainer>
       <Titulo>Visualizar Ponto de Risco</Titulo>
+      
       <AreaInput>
         <Input value={refValue} editable={false} />
       </AreaInput>

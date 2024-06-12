@@ -17,28 +17,29 @@ export const Titulo = styled.Text`
 
 export const AreaInput = styled.View`
    flex-direction: row;
+   
 `;
 
 export const Input = styled.TextInput`
-   background-color: #fafafa;
-   border: 1px solid #d3d3d3;
+   background-color: #eaeaea;
+   border: 1px solid #c8c8c8;
    width: 90%;
    font-size: 17px;
    padding: 10px;
    border-radius: 8px;
-   color: #121212;
+   color: #737071;
    margin-bottom: 15px;
    elevation: 2;
 `;
 
 export const DescriptionInput = styled.TextInput`
-   background-color: #fafafa;
-   border: 1px solid #d3d3d3;
+   background-color: #eaeaea;
+   border: 1px solid #c8c8c8;
    width: 90%;
    font-size: 17px;
    padding: 10px;
    border-radius: 8px;
-   color: #121212;
+   color: #737071;
    margin-bottom: 15px;
    text-align-vertical: top;
    elevation: 2;
@@ -74,6 +75,7 @@ export const ImageView = styled.Image`
   height: 260px;
   objectFit: contain;
   text-align: right;
+  border-radius: 6px;
 `
 
 export const ButtonSubmit = styled.TouchableOpacity`

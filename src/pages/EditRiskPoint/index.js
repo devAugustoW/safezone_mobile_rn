@@ -19,7 +19,10 @@ import {
   BtnAndImageView,
   Input,
   DescriptionInput,
+  BtnView,
   BtnCamera,
+  BtnDelete,
+  DeleteText,
   ImageView,
   BtnText,
   ButtonSubmit,
@@ -146,6 +149,7 @@ const EditRiskPoint = () => {
     }
   }
 
+  // Editar Ponto de risco
   const handleEditRiskPoint = async() => {
     let riskPoint = {};
 
@@ -215,9 +219,41 @@ const EditRiskPoint = () => {
       console.log('Erro na requisição para API', error);
 
     }   
-
-
   }
+
+  // Deletar Ponto de risco
+  const deleteRiskPoint = async () => {
+    try {
+      // Adiciona uma mensagem de confirmação antes de deletar
+      Alert.alert(
+        'Confirmação',
+        'Tem certeza de que deseja deletar este ponto de risco?',
+        [
+          {
+            text: 'Cancelar',
+            onPress: () => console.log('Cancelado o delete'),
+            style: 'cancel',
+          },
+          {
+            text: 'Deletar',
+            onPress: async () => {
+              const response = await axios.delete(`http://192.168.1.2:3333/delete/${id}`);
+  
+              if (response.data) {
+                Alert.alert('Ponto de risco deletado com sucesso!');
+                console.log('Response da API:', response.data);
+              }
+            },
+          },
+        ]
+      );
+      navigation.navigate('RiskPointList');
+
+    } catch (error) {
+      console.log('Erro na requisição para deletar ponto de risco', error);
+      Alert.alert('Erro ao deletar ponto de risco');
+    } 
+  } 
 
   return (
     <EditRiskPointContainer>
@@ -242,12 +278,22 @@ const EditRiskPoint = () => {
       </AreaInput>
 
       <BtnAndImageView>
-        <BtnCamera onPress={pickImage}>
-          <Feather name='camera' color='#fff' size={45} />
-          <CameraText>
-            Anexar
-          </CameraText>
-        </BtnCamera>
+
+        <BtnView>
+          <BtnCamera onPress={pickImage}>
+            <Feather name='camera' color='#fff' size={45} />
+            <CameraText>
+              Anexar
+            </CameraText>
+          </BtnCamera>
+
+          <BtnDelete onPress={deleteRiskPoint}>
+            <Feather name='trash-2' color='#fff' size={45} />
+            <DeleteText>
+              Deletar
+            </DeleteText>
+          </BtnDelete>
+        </BtnView>
 
         {newImage && (
           <ImageView source={{ uri: newImage  }} />
