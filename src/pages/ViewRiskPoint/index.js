@@ -1,95 +1,66 @@
 import React, { useState } from 'react';
-import * as ImagePicker from 'expo-image-picker';
+import { useRoute } from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import Feather from 'react-native-vector-icons/Feather';
 
 import { 
-  RegisterContainer,
+  ViewRiskPointContainer,
   Titulo,
   AreaInput,
+  BtnAndImageView,
   Input,
   DescriptionInput,
-  BtnCamera,
+  BtnEdit,
   ImageView,
   BtnText,
   ButtonSubmit,
-  CameraText 
+  CameraEdit 
 } from './styles.js';
 
 const ViewRiskPoint = () => {
+  const navigation = useNavigation();
+  const route = useRoute();
+  const { id, refValue, title, description, image } = route.params;
+  
+  console.log('Entrei em Visualizar Ponto de Risco')
+  console.log('Console da imagem: ', image)
+  console.log('Vendo de ID passou para ViewRisk...', id);
+
     
-  const [image, setImage] = useState(null);
-
-  const pickImage  = async() => {
-    console.log('Aqui 1');
-
-    // Solicitar permissão para a câmera
-    const cameraPermission = await ImagePicker.requestCameraPermissionsAsync();
-    if (cameraPermission.status !== 'granted') {
-      Alert.alert('Permissão necessária', 'Desculpe, precisamos da permissão para acessar a câmera!');
-      return;
-    }
-
-    console.log('Aqui 2');
-
-    // Solicitar permissão para a galeria de fotos (escrita e leitura)
-    const mediaLibraryPermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (mediaLibraryPermission.status !== 'granted') {
-      Alert.alert('Permissão necessária', 'Desculpe, precisamos da permissão para salvar fotos no álbum!');
-      return;
-    }
-
-    console.log('Aqui 3');
-
-    // Abrir a câmera
-    const result = await ImagePicker.launchCameraAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [4, 3],
-      quality: 1,
-      saveToPhotos: true,
-    });
-
-    console.log('Aqui 4');
-
-    if (!result.canceled) {
-      setImage(result.uri);
-      console.log('Imagem capturada e salva:', result.uri);
-    }
-
-    console.log('Aqui 5');
-
-  }
-
   return (
-    <RegisterContainer>
+    <ViewRiskPointContainer>
       <Titulo>Visualizar Ponto de Risco</Titulo>
       <AreaInput>
-        <Input placeholder="Identificação do PR" />
+        <Input value={refValue} editable={false} />
       </AreaInput>
       <AreaInput>
-        <Input placeholder="Título do PR" />
+        <Input value={title} editable={false} />
       </AreaInput>
       <AreaInput>
         <DescriptionInput
-          placeholder="Descrição do PR"
           multiline={true}
-          numberOfLines={8} />
+          numberOfLines={6}
+          value={description}
+          editable={false} />
       </AreaInput>
 
-      <BtnCamera onPress={pickImage}>
-        <Feather name='camera' color='#fff' size={45} />
-        <CameraText>
-          Anexar
-        </CameraText>
-      </BtnCamera>
-  
-      <ImageView
-        source={{uri: image}} />
+      <BtnAndImageView>
+        <BtnEdit onPress={() => navigation.navigate('EditRiskPoint', { id, refValue, title, description, image })}>
+          <Feather name='edit' color='#fff' size={45} />
+          <CameraEdit>
+            Editar
+          </CameraEdit>
+        </BtnEdit>
+
+        {image && (
+          <ImageView source={{ uri: image }} />
+        )}
+      </BtnAndImageView>
 
       <ButtonSubmit>
         <BtnText>Cadastrar</BtnText>
       </ButtonSubmit>
-    </RegisterContainer>
+    </ViewRiskPointContainer>
   )
 }
 

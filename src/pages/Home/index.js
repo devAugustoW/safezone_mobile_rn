@@ -24,7 +24,7 @@ export default function Home(){
       console.log('Entrou no fetch para buscar locations')
 
       try {
-         const response = await axios.get('http://192.168.1.2:3333/getlocations'); 
+         const response = await axios.get('http://192.168.1.9:3333/getlocations'); 
 
 
          //setRiskPointLocations(response);

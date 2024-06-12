@@ -1,6 +1,6 @@
 import styled from "styled-components/native";
 
-export const RegisterContainer = styled.SafeAreaView`
+export const EditRiskPointContainer = styled.SafeAreaView`
    flex: 1;
    background-color: #ffffff;
    align-items: center;
@@ -47,28 +47,35 @@ export const DescriptionInput = styled.TextInput`
    elevation: 2;
 `;
 
+export const BtnAndImageView = styled.View`
+  flex-direction: row;
+  justify-content: space-between;   
+  width: 100%;
+  padding-left: 20px;
+  padding-right: 20px;
+  
+`;
+
 export const BtnCamera = styled.TouchableOpacity`
    background-color: #f48604;
    padding: 15px 25px;
    border-radius: 8px;
    align-self: flex-start;
-   margin-top: 15px;
-   margin-left: 18px;
-   margin-bottom: 15px;
+   justify-content: center;
+
+   margin-bottom: 10px;
    elevation: 2;
 `;
-
-
 
 export const CameraText = styled.Text`
  color: #fff;
 `;
 
 export const ImageView = styled.Image`
-   width: 80%;
-   height: 140px;
-   objectFit: contain;
-   z-index: 100;
+  width: 46%;
+  height: 260px;
+  objectFit: contain;
+  text-align: right;
 `
 
 export const ButtonSubmit = styled.TouchableOpacity`
