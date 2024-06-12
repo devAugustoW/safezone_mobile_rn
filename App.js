@@ -34,7 +34,6 @@ function App() {
           component={Register} 
           options={{
             headerShown: false,
-
           }} 
         />
         <Stack.Screen 

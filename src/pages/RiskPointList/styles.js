@@ -6,7 +6,7 @@ export const ListContainer = styled.View`
    justify-content: center;
    padding-left: 5px;
    padding-right: 5px;
-   background-color: #fff;
+   background-color: #f8f8f9;
 `;
 
 export const Titulo = styled.Text`
@@ -16,7 +16,7 @@ export const Titulo = styled.Text`
 `;
 
 export const ScrollView = styled.ScrollView`
-   width: 100%;
+   width: 98%;
    flex-direction: column;
 
 

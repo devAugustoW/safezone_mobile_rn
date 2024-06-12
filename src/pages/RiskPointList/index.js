@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios';
+import { StatusBar } from 'expo-status-bar';
+
 import {
   ListContainer,
   ScrollView,
@@ -33,6 +35,7 @@ const RiskPointList = () => {
 
   return (
     <ListContainer>
+      <StatusBar backgroundColor='#f0f0f1' />
       <Titulo>Lista de Pontos de Risco</Titulo>
 
       <ScrollView>
