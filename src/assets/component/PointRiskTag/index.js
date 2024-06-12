@@ -5,16 +5,15 @@ import { useNavigation } from '@react-navigation/native';
 import Feather from 'react-native-vector-icons/Feather';
 
 import {
-   Tag,
-   IdentifyView,
-   Identify,
-   IconContainer,
-   TitleView,
-   IdentView,
-   DesciptionText,
-   ButtonView,
-   ButtonArea,
-   ButtonAreaWithBorders
+  Tag,
+  IdentifyView,
+  Identify,
+  TitleView,
+  IdentView,
+  DesciptionText,
+  ButtonView,
+  ButtonArea,
+  ButtonAreaWithBorders
 } from './styles'
 
 
@@ -23,23 +22,34 @@ const PointRiskTag = ({ id, refValue, title, description, image, location }) => 
 
   const deleteRiskPoint = async () => {
 
-
-
     try {
-      const response = await axios.delete(`http://192.168.1.2:3333/delete/${id}`);
-
-      if (response.data) {
-        Alert.alert('Ponto de risco deletado com sucesso!');
-        console.log('Response da API:', response.data);
-        
-      }
-
+      // Adiciona uma mensagem de confirmação antes de deletar
+      Alert.alert(
+        'Confirmação',
+        'Tem certeza de que deseja deletar este ponto de risco?',
+        [
+          {
+            text: 'Cancelar',
+            onPress: () => console.log('Cancelado o delete'),
+            style: 'cancel',
+          },
+          {
+            text: 'Deletar',
+            onPress: async () => {
+              const response = await axios.delete(`http://192.168.1.2:3333/delete/${id}`);
+  
+              if (response.data) {
+                Alert.alert('Ponto de risco deletado com sucesso!');
+                console.log('Response da API:', response.data);
+              }
+            },
+          },
+        ]
+      );
     } catch (error) {
       console.log('Erro na requisição para deletar ponto de risco', error);
       Alert.alert('Erro ao deletar ponto de risco');
-    
     } 
-
   }  
 
   return (
