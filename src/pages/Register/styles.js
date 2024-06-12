@@ -67,11 +67,10 @@ export const CameraText = styled.Text`
 `;
 
 export const ImageView = styled.Image`
-   width: 80%;
-   height: 180px;
-   objectFit: contain;
-   margin-left: 32px;
-   align-self: flex-end;
+  width: 46%;
+  height: 220px;
+  objectFit: contain;
+  text-align: right;
 `
 
 export const Button = styled.TouchableOpacity`
