@@ -22,10 +22,8 @@ const ViewRiskPoint = () => {
   const route = useRoute();
   const { id, refValue, title, description, image } = route.params;
   
-  console.log('Entrei em Visualizar Ponto de Risco')
+  console.log('Entrei na Página Visualizar Ponto de Risco')
   console.log('Console da imagem: ', image)
-  console.log('Vendo de ID passou para ViewRisk...', id);
-
     
   return (
     <ViewRiskPointContainer>

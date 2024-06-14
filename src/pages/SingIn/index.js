@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Alert, Platform, StatusBar } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-
+import { IP_CALL } from '@env';
 import { 
    Background, 
    Container, 
@@ -17,21 +17,20 @@ import {
 
 export default function SignIn(){
    const navigation = useNavigation();
-   const [email, setEmail] = useState('');
-   const [password, setPassword] = useState('');
+   const [email, setEmail] = useState('boris@safezone.com');
+   const [password, setPassword] = useState('12345');
 
    const handleLogin = async() => {
       
-
       const user = {
          email,
          password
       }
 
-      console.log(user)
+      console.log('User para SignIn', user)
       
       try{
-         const response = await axios.post('http://192.168.1.2:3333/login', user)
+         const response = await axios.post(`http://${IP_CALL}:3333/login`, user)
 
 
          if (response.data){

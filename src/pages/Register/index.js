@@ -1,27 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { Keyboard } from 'react-native';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import { Cloudinary } from "@cloudinary/url-gen";
 import { 
   CLOUDINARY_CLOUD_NAME, 
-  CLOUDINARY_API_KEY,
   CLOUDINARY_UPLOAD_PRESET,
-  CLOUDINARY_API_SECRET,
-  CLOUDINARY_URL } from '@env';
+  IP_CALL,
+} from '@env';
 import Feather from 'react-native-vector-icons/Feather';
 import { Alert, Image } from 'react-native';
 import * as Location from 'expo-location';
 import { 
   RegisterContainer,
+  ScrollArea,
   Titulo,
   AreaInput,
   Input,
   DescriptionInput,
+  AreaBtnStatus,
+  BtnReleased,
+  TextReleased,
+  BtnNotReleased,
+  TextNotReleased,
+  AreaStatusDescription,
+  StatusDescriptionInput,
   BtnCamera,
   BtnAndImageView,
   ImageView,
   BtnText,
+  BtnView,
   Button,
   CameraText 
 } from './styles.js';
@@ -33,9 +42,29 @@ const Register = () => {
   const [ref, setRef] = useState('');
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [status, setStatus] = useState(false);
+  const [statusDescription, setstatusDescription] = useState('');
+
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
 
   const navigation = useNavigation();
 
+  // Gerênciar teclado e botão de cadastrar
+  useEffect(() => {
+    const keyboardDidShowListener = Keyboard.addListener('keyboardDidShow', () => {
+        setKeyboardVisible(true);
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener('keyboardDidHide', () => {
+        setKeyboardVisible(false);
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
+  }, []);
 
   //fazer upload de imagem
   const photoUpload = async (image) => {
@@ -68,7 +97,6 @@ const Register = () => {
 
     return image;
   }
-
 
   // Tirar foto
   const pickImage  = async() => {
@@ -129,6 +157,20 @@ const Register = () => {
     }
   }
 
+  // Setar Status como True
+  const setStatusTrue = () => {
+    setStatus(true);
+    console.log(status);
+    console.log(statusDescription)
+  }
+
+  // Setar Status como False
+  const setStatusFalse = () => {
+    setStatus(false);
+    console.log(status);
+    setDescription('');
+  }
+
   // Cadastrar ponto de risco -> Montar o Objeto Ponto de Risco
   const handleRegister = async() => {
     let riskPoint = {};
@@ -157,7 +199,8 @@ const Register = () => {
           longitude: locationData.longitude
         },
         description: description,
-        status: false,
+        status: status,
+        statusDescription: statusDescription,
         image: image,
       }
 
@@ -172,7 +215,7 @@ const Register = () => {
 
     // Fazer a chamada para enviar o Objeto para API
     try{
-      const response = await axios.post('http://192.168.1.2:3333/create', riskPoint);
+      const response = await axios.post(`http://${IP_CALL}:3333/create`, riskPoint);
 
       if (response.data){
         Alert.alert('Ponto de Risco criado com sucesso!');
@@ -187,8 +230,10 @@ const Register = () => {
       setRef('');
       setTitle('');
       setDescription('');
+      setStatus(false);
+      setstatusDescription('');
 
-      console.group('indo para home')
+      console.log('Inputs zerados, indo para Home')
 
       navigation.navigate('Home');      
 
@@ -200,48 +245,76 @@ const Register = () => {
     
   return (
     <RegisterContainer>
-      <Titulo>Cadastro de Ponto de Risco</Titulo>
+      <ScrollArea>
+        <Titulo>Cadastro de Ponto de Risco</Titulo>
 
-      <AreaInput>
-        <Input placeholder="Referência do PR"
-          name={ref}
-          value={ref}
-          onChangeText={setRef} />
-      </AreaInput>
+        <AreaInput>
+          <Input placeholder="Referência do PR"
+            name={ref}
+            value={ref}
+            onChangeText={setRef} />
+        </AreaInput>
 
-      <AreaInput>
-        <Input placeholder="Título do PR"
-          name={title}
-          value={title}
-          onChangeText={setTitle} />
-      </AreaInput>
+        <AreaInput>
+          <Input placeholder="Título do PR"
+            name={title}
+            value={title}
+            onChangeText={setTitle} />
+        </AreaInput>
 
-      <AreaInput>
-        <DescriptionInput
-          placeholder="Descrição do PR"
-          multiline={true}
-          numberOfLines={8}
-          name={description}
-          value={description}
-          onChangeText={setDescription} />
-      </AreaInput>
+        <AreaInput>
+          <DescriptionInput
+            placeholder="Descrição do PR"
+            multiline={true}
+            numberOfLines={4}
+            name={description}
+            value={description}
+            onChangeText={setDescription} />
+        </AreaInput>
+ 
 
-      <BtnAndImageView>
-        <BtnCamera onPress={pickImage}>
-          <Feather name='camera' color='#fff' size={45} />
-          <CameraText>
-            Anexar
-          </CameraText>
-        </BtnCamera>
+        <AreaBtnStatus>
+          <BtnReleased onPress={setStatusTrue} active={status}>
+            <TextReleased active={status}>Liberado</TextReleased>
+          </BtnReleased>
+            
+          <BtnNotReleased onPress={setStatusFalse} active={!status}>
+          <TextNotReleased active={!status}>Não Liberado</TextNotReleased>
+          </BtnNotReleased>  
+        </AreaBtnStatus>
 
-        {image && (
-          <ImageView source={{ uri: image }} />
+        <AreaStatusDescription>
+          {status && (
+            <StatusDescriptionInput
+              placeholder="Descrição da Liberação"
+              numberOfLines={4}
+              name={statusDescription}
+              value={statusDescription}
+              onChangeText={setstatusDescription} />
+          )}
+        </AreaStatusDescription>
+  
+        <BtnAndImageView>
+          <BtnCamera onPress={pickImage}>
+            <Feather name='camera' color='#fff' size={45} />
+            <CameraText>
+              Anexar
+            </CameraText>
+          </BtnCamera>
+
+          {image && (
+            <ImageView source={{ uri: image }} />
+          )}
+        </BtnAndImageView>
+      </ScrollArea>
+
+      <BtnView>
+        {!isKeyboardVisible && (
+          <Button onPress={handleRegister}>
+            <BtnText>Cadastrar</BtnText>
+          </Button>
         )}
-      </BtnAndImageView>
-
-      <Button onPress={handleRegister}>
-        <BtnText>Cadastrar</BtnText>
-      </Button>
+      </BtnView>
     </RegisterContainer>
   )
 }

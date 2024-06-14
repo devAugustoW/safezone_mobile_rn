@@ -5,10 +5,9 @@ import * as ImagePicker from 'expo-image-picker';
 import { Cloudinary } from "@cloudinary/url-gen";
 import { 
   CLOUDINARY_CLOUD_NAME, 
-  CLOUDINARY_API_KEY,
   CLOUDINARY_UPLOAD_PRESET,
-  CLOUDINARY_API_SECRET,
-  CLOUDINARY_URL } from '@env';
+  IP_CALL 
+} from '@env';
 import Feather from 'react-native-vector-icons/Feather';
 import { Alert, Image } from 'react-native';
 import * as Location from 'expo-location';
@@ -30,9 +29,9 @@ import {
 } from './styles.js';
 
 const EditRiskPoint = () => {
-  console.log('Entrei em Editar Ponto de Risco');
   const navigation = useNavigation();
   const route = useRoute();
+  
   const { id, refValue, title, description, image, location } = route.params;
 
   const [newRefValue, setNewRefValue] = useState(refValue);
@@ -40,36 +39,35 @@ const EditRiskPoint = () => {
   const [newDescription, setNewDescription] = useState(description);
   const [newImage, setNewImage] = useState(image);
   const [newLocation, setNewLocation] = useState(location);
+
+  console.log('ENTREI EM EDITAR');
   
   //fazer upload de imagem
   const photoUpload = async (newImage) => {
 
-    console.log('Entrou NOVA função upload', newImage)
+    console.log('Iniciando upload de imagem no Cloudinary', newImage)
 
     const dataImage = new FormData();
     dataImage.append('file', newImage);
     dataImage.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
     dataImage.append('cloud_name', CLOUDINARY_CLOUD_NAME);
 
-    console.log('Console do data.append');
-
     try {
       const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
         method: 'post',
         body: dataImage,
       });
-
       const resultImage = await res.json();
+
       setNewImage(resultImage.url);
-      console.log('Cadastro no cloudinary: ', resultImage.url);
+      console.log('Cadastro OK - URL imgame: ', resultImage.url);
 
       return resultImage.url;
 
     } catch (err) {
       console.log('Erro na requisição fetch ', err);
-
+      return null;
     }
-    return resultImage.url;
   }
 
   const pickImage  = async() => {
@@ -116,6 +114,7 @@ const EditRiskPoint = () => {
   
       // Enviar a nova foto para upload
       photoUpload(newFile);
+
     } else{
       console.log('Foto deu Ruim.')
 
@@ -153,22 +152,16 @@ const EditRiskPoint = () => {
   const handleEditRiskPoint = async() => {
     let riskPoint = {};
 
-    console.log('Entreino HandleEditRiskPoint');
-    console.log('Chamar location');
+    console.log('Entrei em Cadastrar novo PR');
 
     // Montar o objeto
     try{
       const locationData = await getLocation();
 
-      console.log('locationData: ', locationData);
-
-
       if (locationData){
         const { latitude, longitude } = locationData;
-
+        console.log('locationData: ', locationData);
       }
-
-      console.log('locationData OK!')
 
       riskPoint = {
         id: id,
@@ -180,10 +173,10 @@ const EditRiskPoint = () => {
         },
         description: newDescription,
         status: false,
-        image: image,
+        image: newImage,
       }
 
-      console.log('console do objeto riskPoint', riskPoint)
+      console.log('console do objeto Edit riskPoint', riskPoint)
 
     } catch(err) {
       console.log('Erro na requisição handleRegister', err)
@@ -193,7 +186,7 @@ const EditRiskPoint = () => {
     console.log('Chegando na requisição para atualizar Ponto de Risco', riskPoint);
 
     try{
-      const response = await axios.put('http://192.168.1.2:3333/update', riskPoint, {
+      const response = await axios.put(`http://${IP_CALL}:3333/update`, riskPoint, {
         method: 'PUT', 
       });
 
@@ -237,7 +230,7 @@ const EditRiskPoint = () => {
           {
             text: 'Deletar',
             onPress: async () => {
-              const response = await axios.delete(`http://192.168.1.2:3333/delete/${id}`);
+              const response = await axios.delete(`http://${IP_CALL}:3333/delete/${id}`);
   
               if (response.data) {
                 Alert.alert('Ponto de risco deletado com sucesso!');

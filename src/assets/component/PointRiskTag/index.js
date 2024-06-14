@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import axios from 'axios';
+import Feather from 'react-native-vector-icons/Feather';
 import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import Feather from 'react-native-vector-icons/Feather';
-
+import { IP_CALL } from '@env';
 import {
   Tag,
   IdentifyView,
@@ -35,7 +35,7 @@ const PointRiskTag = ({ id, refValue, title, description, image, location }) => 
           {
             text: 'Deletar',
             onPress: async () => {
-              const response = await axios.delete(`http://192.168.1.2:3333/delete/${id}`);
+              const response = await axios.delete(`http://${IP_CALL}:3333/delete/${id}`);
   
               if (response.data) {
                 Alert.alert('Ponto de risco deletado com sucesso!');
@@ -54,12 +54,9 @@ const PointRiskTag = ({ id, refValue, title, description, image, location }) => 
   return (
    <Tag>
       <IdentifyView>
-        <Identify>
-          {refValue}
-        </Identify>
+        <Identify>{refValue}</Identify>
         
         <Feather name='map-pin' color='#fff' size={20} />
-        
       </IdentifyView>
 
       <TitleView>{title}</TitleView>

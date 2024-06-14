@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { Marker } from 'react-native-maps';
 import { StatusBar } from 'expo-status-bar';
+import { IP_CALL } from '@env';
+import Feather from 'react-native-vector-icons/Feather';
 import { 
    Background, 
    StyledMapView, 
@@ -13,36 +15,35 @@ import {
    BtnText 
 } from './styles';
 
-import Feather from 'react-native-vector-icons/Feather';
-
-
-export default function Home(){
+const Home = () => {
    const navigation = useNavigation();
-   const [riskPointLocations, setRiskPointLocations] = useState([])
+   const [riskPointLocations, setRiskPointLocations] = useState([]);
+
+   console.log('Página Home')
 
    const fetchRiskPoints = async () => {
-      console.log('Entrou no fetch para buscar locations')
+      console.log('Fazendo CHAMADA GET em locations');
 
       try {
-         const response = await axios.get('http://192.168.1.2:3333/getlocations'); 
+         const response = await axios.get(`http://${IP_CALL}:3333/getlocations`); 
 
+         if(response.data){
+            console.log('Locations OK: ', response.data)
+            setRiskPointLocations(response.data)
 
-         //setRiskPointLocations(response);
-
-         console.log('Locationde de response.data: ', response.data)
-         
-         setRiskPointLocations(response.data)
+         } else {
+            console.log('Chamada HOME falhou: ', response.data.message)
+         }          
 
       } catch (error) {
          console.error('Erro ao buscar pontos de risco:', error);
 
       }
-
    };
    
    useEffect(() => {
       fetchRiskPoints();
-      console.log('Estado do riskPointLocations presente:', riskPointLocations);
+      console.log('Atualiando riskPointLocations:', riskPointLocations);
    }, []);
    
    return (
@@ -50,11 +51,12 @@ export default function Home(){
          <StatusBar backgroundColor='#CCCCCC' />
          <StyledMapView
             initialRegion={{
-               latitude:-8.1238872,
-               longitude:-34.9075868,
+               latitude:-8.0525654,
+               longitude:-34.8877599,
                latitudeDelta:0.02,
                longitudeDelta:0.02,
             }} >
+         
             {riskPointLocations.map((loc) => (
                <Marker
                   key={loc._id}
@@ -92,3 +94,5 @@ export default function Home(){
       </Background>
    )
 }
+
+export default Home;
