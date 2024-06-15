@@ -20,10 +20,11 @@ export const BorderTab = styled.View`
    left: 0;
    right: 0;
    z-index: 10;
+   
 
-   background-color: #CCCCCC;
-   border-top-left-radius: 20px;
-   border-top-right-radius: 20px;
+   background-color: rgb(250, 250, 250);
+   border-top-left-radius: 30px;
+   border-top-right-radius: 30px;
    padding-top: 15px;
    padding-bottom: 10px;
    flex-direction: row;
@@ -34,24 +35,19 @@ export const BorderTab = styled.View`
 export const Btn = styled.TouchableOpacity`
    width: 100px;
    height: 85px;
-
    background-color: #f48604;
-   border-radius: 10px;
+   border-radius: 16px;
    justify-content: center;
    align-items: center;
 `;
 
-export const ButtonIcon =styled.Text`
- 
-`;
+export const ButtonIcon =styled.Text``;
 
 export const BorderLogo  = styled.Image`
    width: 70px;
    height: 100px;
    resizeMode: contain;
 `;
-
-
 
 export const BtnText = styled.Text`
    color: #FFFFFF; /* Cor do texto do botão */

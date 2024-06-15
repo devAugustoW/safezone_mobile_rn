@@ -48,7 +48,7 @@ const Home = () => {
    
    return (
       <Background>
-         <StatusBar backgroundColor='#CCCCCC' />
+         <StatusBar backgroundColor='rgb(250, 250, 250)' />
          <StyledMapView
             initialRegion={{
                latitude:-8.0525654,

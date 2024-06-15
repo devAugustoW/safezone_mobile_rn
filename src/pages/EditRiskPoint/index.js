@@ -14,10 +14,19 @@ import * as Location from 'expo-location';
 import { 
   EditRiskPointContainer,
   Titulo,
+  ScrollView,
+  View,
   AreaInput,
   BtnAndImageView,
   Input,
   DescriptionInput,
+  AreaBtnStatus,
+  BtnReleased,
+  TextReleased,
+  BtnNotReleased,
+  TextNotReleased,
+  AreaStatusDescription,
+  StatusDescriptionInput,
   BtnView,
   BtnCamera,
   BtnDelete,
@@ -32,15 +41,19 @@ const EditRiskPoint = () => {
   const navigation = useNavigation();
   const route = useRoute();
   
-  const { id, refValue, title, description, image, location } = route.params;
+  const { id, refValue, title, description, status, statusDescription, image, location, onDelete } = route.params;
 
   const [newRefValue, setNewRefValue] = useState(refValue);
   const [newTitle, setNewTitle] = useState(title);
   const [newDescription, setNewDescription] = useState(description);
+  const [newStatus, setNewStatus] = useState(status);
+  const [newStatusDescription, setNewStatusDescription] = useState(statusDescription);
   const [newImage, setNewImage] = useState(image);
   const [newLocation, setNewLocation] = useState(location);
 
-  console.log('ENTREI EM EDITAR');
+  
+
+  console.log('ENTREI EM EDITAR, statusDescription: ', statusDescription);
   
   //fazer upload de imagem
   const photoUpload = async (newImage) => {
@@ -148,6 +161,20 @@ const EditRiskPoint = () => {
     }
   }
 
+  // Setar Status como True
+  const setStatusTrue = () => {
+    setNewStatus(true);
+    console.log('Novo Status', newStatus);
+    console.log('Nova Descrição do Status',newStatusDescription)
+  }
+
+  // Setar Status como False
+  const setStatusFalse = () => {
+    setNewStatus( false);
+    console.log('Novo Status', newStatus);
+    setNewStatusDescription('');
+  }
+
   // Editar Ponto de risco
   const handleEditRiskPoint = async() => {
     let riskPoint = {};
@@ -172,7 +199,8 @@ const EditRiskPoint = () => {
           longitude: locationData.longitude
         },
         description: newDescription,
-        status: false,
+        status: newStatus,
+        statusDescription: newStatusDescription,
         image: newImage,
       }
 
@@ -203,6 +231,8 @@ const EditRiskPoint = () => {
       setNewRefValue('');
       setNewTitle('');
       setNewDescription('');
+      setStatusFalse(false);
+      setNewStatusDescription('');
 
       console.group('indo para home')
 
@@ -235,13 +265,16 @@ const EditRiskPoint = () => {
               if (response.data) {
                 Alert.alert('Ponto de risco deletado com sucesso!');
                 console.log('Response da API:', response.data);
+
+                navigation.navigate('RiskPointList');
+                
               }
             },
           },
         ]
       );
-      navigation.navigate('RiskPointList');
-
+      
+      
     } catch (error) {
       console.log('Erro na requisição para deletar ponto de risco', error);
       Alert.alert('Erro ao deletar ponto de risco');
@@ -251,51 +284,77 @@ const EditRiskPoint = () => {
   return (
     <EditRiskPointContainer>
       <Titulo>Editar Ponto de Risco</Titulo>
-      <AreaInput>
-        <Input 
-          value={newRefValue}
-          onChangeText={setNewRefValue} />
-      </AreaInput>
-      <AreaInput>
-        <Input v
-          value={newTitle}
-          onChangeText={setNewTitle} />
-      </AreaInput>
-      <AreaInput>
-        <DescriptionInput
-          placeholder="Descrição do PR"
-          multiline={true}
-          numberOfLines={6}
-          value={newDescription}
-          onChangeText={setNewDescription} />
-      </AreaInput>
+      <ScrollView>
+        <View>
+          <AreaInput>
+            <Input 
+              value={newRefValue}
+              onChangeText={setNewRefValue} />
+          </AreaInput>
 
-      <BtnAndImageView>
+          <AreaInput>
+            <Input v
+              value={newTitle}
+              onChangeText={setNewTitle} />
+          </AreaInput>
 
-        <BtnView>
-          <BtnCamera onPress={pickImage}>
-            <Feather name='camera' color='#fff' size={45} />
-            <CameraText>
-              Anexar
-            </CameraText>
-          </BtnCamera>
+          <AreaInput>
+            <DescriptionInput
+              placeholder="Descrição do PR"
+              multiline={true}
+              numberOfLines={6}
+              value={newDescription}
+              onChangeText={setNewDescription} />
+          </AreaInput>
 
-          <BtnDelete onPress={deleteRiskPoint}>
-            <Feather name='trash-2' color='#fff' size={45} />
-            <DeleteText>
-              Deletar
-            </DeleteText>
-          </BtnDelete>
-        </BtnView>
+          <AreaBtnStatus>
+          <BtnReleased onPress={setStatusTrue} active={newStatus}>
+            <TextReleased active={newStatus}>Liberado</TextReleased>
+          </BtnReleased>
+            
+          <BtnNotReleased onPress={setStatusFalse} active={!newStatus}>
+          <TextNotReleased active={!newStatus}>Não Liberado</TextNotReleased>
+          </BtnNotReleased>  
+        </AreaBtnStatus>
 
-        {newImage && (
-          <ImageView source={{ uri: newImage  }} />
-        )}
-      </BtnAndImageView>
-  
-      <ButtonSubmit>
-        <BtnText onPress={handleEditRiskPoint}>Cadastrar</BtnText>
-      </ButtonSubmit>
+          <AreaStatusDescription>
+          {newStatus && (
+            <StatusDescriptionInput 
+              placeholder='Descrição do Status:'
+              multiline={true}
+              numberOfLines={2}
+              value={newStatusDescription}              
+              onChangeText={setNewStatusDescription} />
+          )}
+        </AreaStatusDescription>
+
+          <BtnAndImageView>
+            <BtnView>
+              <BtnCamera onPress={pickImage}>
+                <Feather name='camera' color='#fff' size={45} />
+                <CameraText>
+                  Anexar
+                </CameraText>
+              </BtnCamera>
+
+              <BtnDelete onPress={deleteRiskPoint}>
+                <Feather name='trash-2' color='#fff' size={45} />
+                <DeleteText>
+                  Deletar
+                </DeleteText>
+              </BtnDelete>
+            </BtnView>
+
+            {newImage && (
+              <ImageView source={{ uri: newImage  }} />
+            )}
+          </BtnAndImageView>
+      
+          <ButtonSubmit>
+            <BtnText onPress={handleEditRiskPoint}>Cadastrar</BtnText>
+          </ButtonSubmit>
+        </View>
+      </ScrollView>
     </EditRiskPointContainer>
   )
 }

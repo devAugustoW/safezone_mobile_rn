@@ -168,7 +168,6 @@ const Register = () => {
   const setStatusFalse = () => {
     setStatus(false);
     console.log(status);
-    setDescription('');
   }
 
   // Cadastrar ponto de risco -> Montar o Objeto Ponto de Risco
@@ -232,7 +231,6 @@ const Register = () => {
       setDescription('');
       setStatus(false);
       setstatusDescription('');
-
       console.log('Inputs zerados, indo para Home')
 
       navigation.navigate('Home');      

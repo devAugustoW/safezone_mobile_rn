@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import axios from 'axios';
 import Feather from 'react-native-vector-icons/Feather';
 import { Alert } from 'react-native';
@@ -10,19 +10,20 @@ import {
   Identify,
   TitleView,
   IdentView,
+  ViewCol1,
   DesciptionText,
   ButtonView,
   ButtonArea,
-  ButtonAreaWithBorders
+  ButtonAreaWithBorders,
+  StatusText
 } from './styles'
 
 
-const PointRiskTag = ({ id, refValue, title, description, image, location }) => {
+const PointRiskTag = ({ id, refValue, title, description, status, statusDescription, image, location, onDelete }) => {
   const navigation = useNavigation();
 
   const deleteRiskPoint = async () => {
     try {
-      // Adiciona uma mensagem de confirmação antes de deletar
       Alert.alert(
         'Confirmação',
         'Tem certeza de que deseja deletar este ponto de risco?',
@@ -39,7 +40,9 @@ const PointRiskTag = ({ id, refValue, title, description, image, location }) => 
   
               if (response.data) {
                 Alert.alert('Ponto de risco deletado com sucesso!');
-                console.log('Response da API:', response.data);
+                console.log('Resposta da API:', response.data);
+
+                onDelete(id); // Chama a função de deleção passada como prop
               }
             },
           },
@@ -48,8 +51,9 @@ const PointRiskTag = ({ id, refValue, title, description, image, location }) => 
     } catch (error) {
       console.log('Erro na requisição para deletar ponto de risco', error);
       Alert.alert('Erro ao deletar ponto de risco');
-    } 
+    }     
   }  
+  
 
   return (
    <Tag>
@@ -60,16 +64,20 @@ const PointRiskTag = ({ id, refValue, title, description, image, location }) => 
       </IdentifyView>
 
       <TitleView>{title}</TitleView>
+      
 
       <IdentView>
-        <DesciptionText>{description}</DesciptionText>
+        <ViewCol1>
+          <DesciptionText>{description}</DesciptionText>
+          <StatusText>Status: {status ? 'Liberado' : 'Não Liberado'}</StatusText>
+        </ViewCol1>
 
         <ButtonView>
           <ButtonArea onPress={deleteRiskPoint}>
-            <Feather name='trash-2' color='#000' size={35} />
+            <Feather name='trash-2' color='#fff' size={35} />
           </ButtonArea>
 
-          <ButtonAreaWithBorders onPress={() => navigation.navigate('ViewRiskPoint', { id, refValue, title, description, image, location })}>
+          <ButtonAreaWithBorders onPress={() => navigation.navigate('ViewRiskPoint', { id, refValue, title, description, status, statusDescription, image, location })}>
             <Feather name='search' color='#000' size={30} />
           </ButtonAreaWithBorders>
         </ButtonView>

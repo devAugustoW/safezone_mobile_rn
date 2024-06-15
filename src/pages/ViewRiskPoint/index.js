@@ -6,10 +6,19 @@ import Feather from 'react-native-vector-icons/Feather';
 import { 
   ViewRiskPointContainer,
   Titulo,
+  ScrollView,
+  View,
   AreaInput,
   BtnAndImageView,
   Input,
   DescriptionInput,
+  AreaBtnStatus,
+  BtnReleased,
+  TextReleased,
+  BtnNotReleased,
+  TextNotReleased,
+  AreaStatusDescription,
+  StatusDescriptionInput,
   BtnEdit,
   ImageView,
   BtnText,
@@ -20,45 +29,64 @@ import {
 const ViewRiskPoint = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { id, refValue, title, description, image } = route.params;
+  const { id, refValue, title, description, status, statusDescription, image, location } = route.params;
   
   console.log('Entrei na Página Visualizar Ponto de Risco')
-  console.log('Console da imagem: ', image)
+  console.log('Console da Descrição do status: ', statusDescription)
     
   return (
     <ViewRiskPointContainer>
       <Titulo>Visualizar Ponto de Risco</Titulo>
-      
-      <AreaInput>
-        <Input value={refValue} editable={false} />
-      </AreaInput>
-      <AreaInput>
-        <Input value={title} editable={false} />
-      </AreaInput>
-      <AreaInput>
-        <DescriptionInput
-          multiline={true}
-          numberOfLines={6}
-          value={description}
-          editable={false} />
-      </AreaInput>
+      <ScrollView>
+        <View>
+        <AreaInput>
+          <Input value={refValue} editable={false} />
+        </AreaInput>
 
-      <BtnAndImageView>
-        <BtnEdit onPress={() => navigation.navigate('EditRiskPoint', { id, refValue, title, description, image })}>
-          <Feather name='edit' color='#fff' size={45} />
-          <CameraEdit>
-            Editar
-          </CameraEdit>
-        </BtnEdit>
+        <AreaInput>
+          <Input value={title} editable={false} />
+        </AreaInput>
 
-        {image && (
-          <ImageView source={{ uri: image }} />
-        )}
-      </BtnAndImageView>
+        <AreaInput>
+          <DescriptionInput
+            multiline={true}
+            numberOfLines={6}
+            value={description}
+            editable={false} />
+        </AreaInput>
 
-      <ButtonSubmit>
-        <BtnText>Cadastrar</BtnText>
-      </ButtonSubmit>
+        <AreaBtnStatus>
+          <BtnReleased active={status}>
+            <TextReleased active={status}>Liberado</TextReleased>
+          </BtnReleased>
+            
+          <BtnNotReleased active={!status}>
+          <TextNotReleased active={!status}>Não Liberado</TextNotReleased>
+          </BtnNotReleased>  
+        </AreaBtnStatus>
+
+        <AreaStatusDescription>
+          {status && (
+            <StatusDescriptionInput 
+              value={statusDescription}
+              editable={false}
+              multiline={true}
+              numberOfLines={2} />
+          )}
+        </AreaStatusDescription>
+
+
+        <BtnAndImageView>
+          {image && (
+            <ImageView source={{ uri: image }} />
+          )}
+        </BtnAndImageView>
+
+        <ButtonSubmit onPress={() => navigation.navigate('EditRiskPoint', { id, refValue, title, description, status, statusDescription, image })}>
+          <BtnText>Editar</BtnText>
+        </ButtonSubmit>
+        </View>
+      </ScrollView>
     </ViewRiskPointContainer>
   )
 }
