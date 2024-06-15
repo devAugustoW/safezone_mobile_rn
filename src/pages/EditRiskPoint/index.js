@@ -6,7 +6,8 @@ import { Cloudinary } from "@cloudinary/url-gen";
 import { 
   CLOUDINARY_CLOUD_NAME, 
   CLOUDINARY_UPLOAD_PRESET,
-  IP_CALL 
+  IP_CALL,
+  PORT 
 } from '@env';
 import Feather from 'react-native-vector-icons/Feather';
 import { Alert, Image } from 'react-native';
@@ -260,7 +261,7 @@ const EditRiskPoint = () => {
           {
             text: 'Deletar',
             onPress: async () => {
-              const response = await axios.delete(`http://${IP_CALL}:3333/delete/${id}`);
+              const response = await axios.delete(`http://${IP_CALL}:${PORT}{/delete/${id}`);
   
               if (response.data) {
                 Alert.alert('Ponto de risco deletado com sucesso!');
