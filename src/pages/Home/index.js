@@ -25,7 +25,7 @@ const Home = () => {
       console.log('Fazendo CHAMADA GET em locations');
 
       try {
-         const response = await axios.get(`http://${IP_CALL}:3333/getlocations`); 
+         const response = await axios.get(`http://192.168.1.7:3333/getlocations`); 
 
          if(response.data){
             console.log('Locations OK: ', response.data)
