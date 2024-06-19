@@ -36,7 +36,7 @@ const PointRiskTag = ({ id, refValue, title, description, status, statusDescript
           {
             text: 'Deletar',
             onPress: async () => {
-              const response = await axios.delete(`http://${IP_CALL}:3333/delete/${id}`);
+              const response = await axios.delete(`http://192.168.1.7:3333/delete/${id}`);
   
               if (response.data) {
                 Alert.alert('Ponto de risco deletado com sucesso!');
