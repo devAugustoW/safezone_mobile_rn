@@ -3,7 +3,7 @@
 npx
 <video width="640" height="360" controls>
 
-  <source src="./src/assets/video_safezone.mp4" type="video/mp4">
+  <source src="./src/assets/safezone10_gif.mp4" type="video/mp4">
 </video>
 <br>
 
