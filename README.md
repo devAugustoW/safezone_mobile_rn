@@ -1,6 +1,6 @@
 # SafeZone: Gerenciamento de Pontos de Risco 📱
 
-![Demonstração do Aplicativo](./src/assets/safezone10_gif.mp4)
+![Demonstração do Aplicativo](./src/assets/SafeZone_github.png)
 <br>
 
 ## Descrição 📋
