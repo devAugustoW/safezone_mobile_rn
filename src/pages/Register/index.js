@@ -214,7 +214,7 @@ const Register = () => {
 
     // Fazer a chamada para enviar o Objeto para API
     try{
-      const response = await axios.post(`http://192.168.1.7:3333/create`, riskPoint);
+      const response = await axios.post(`http://${IP_CALL}:${PORT}/create`, riskPoint);
 
       if (response.data){
         Alert.alert('Ponto de Risco criado com sucesso!');

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { Marker } from 'react-native-maps';
 import { StatusBar } from 'expo-status-bar';
-import { IP_CALL } from '@env';
+import { IP_CALL, PORT } from '@env';
 import Feather from 'react-native-vector-icons/Feather';
 import { 
    Background, 
@@ -25,7 +25,7 @@ const Home = () => {
       console.log('Fazendo CHAMADA GET em locations');
 
       try {
-         const response = await axios.get(`http://192.168.1.7:3333/getlocations`); 
+         const response = await axios.get(`http://${IP_CALL}:${PORT}/getlocations`); 
 
          if(response.data){
             console.log('Locations OK: ', response.data)

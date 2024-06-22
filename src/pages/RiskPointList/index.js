@@ -2,9 +2,7 @@ import React, { useState, useEffect, useCallback  } from 'react'
 import axios from 'axios';
 import { StatusBar } from 'expo-status-bar';
 import { useFocusEffect } from '@react-navigation/native';
-import { 
-  IP_CALL
-} from '@env';
+import { IP_CALL, PORT} from '@env';
 import {
   ListContainer,
   ScrollView,
@@ -20,7 +18,7 @@ const RiskPointList = () => {
 
   const fetchRiskPoints = async () => {
     try {
-      const response = await axios.get(`http://192.168.1.7:3333/getriskpoints`); 
+      const response = await axios.get(`http://${IP_CALL}:${PORT}/getriskpoints`); 
       setRiskPoints(response.data);
       console.log('GET em pontos de risco ', response.data);
     } catch (error) {
