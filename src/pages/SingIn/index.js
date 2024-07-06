@@ -26,21 +26,17 @@ export default function SignIn(){
       email,
       password
     }
-
-    console.log('User do LogIn', user)
     
     try{
       const response = await axios.post(`http://192.168.1.7:${PORT}/login`, user);
 
       if (response.data){
-        console.log('Login realizado com sucesso');
         Alert.alert('Login realizado com sucesso');
 
         await AsyncStorage.setItem('token', response.data.token);
 
         navigation.navigate('Home');
       } else {
-        console.log('Login falhou.', response.data.message);
         Alert.alert('Login falhou.', response.data.message);
       }
     } catch(error){

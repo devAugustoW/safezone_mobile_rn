@@ -48,8 +48,6 @@ const PointRiskTag = ({ id, refValue, title, description, status, statusDescript
   
               if (response.data) {
                 Alert.alert('Ponto de risco deletado com sucesso!');
-                console.log('Resposta da API:', response.data);
-
                 onDelete(id); // Chama a função de deleção passada como prop
               }
             },

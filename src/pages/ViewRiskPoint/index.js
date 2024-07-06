@@ -30,9 +30,6 @@ const ViewRiskPoint = () => {
   const navigation = useNavigation();
   const route = useRoute();
   const { id, refValue, title, description, status, statusDescription, image, location } = route.params;
-  
-  console.log('Entrei na Página Visualizar Ponto de Risco')
-  console.log('Console da Descrição do status: ', statusDescription)
     
   return (
     <ViewRiskPointContainer>

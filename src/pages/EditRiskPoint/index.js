@@ -69,7 +69,6 @@ const EditRiskPoint = () => {
       const resultImage = await res.json();
 
       setNewImage(resultImage.url);
-      console.log('Cadastro OK - URL imgame: ', resultImage.url);
 
       return resultImage.url;
 
@@ -105,7 +104,6 @@ const EditRiskPoint = () => {
 
     if (photo) {
       setNewImage(photo.uri);
-      console.log('Imagem capturada e salva:', photo);
   
       // Criar um novo arquivo para upload
       let newFile = {
@@ -139,7 +137,6 @@ const EditRiskPoint = () => {
         longitude: locationPoint.coords.longitude,
       };
 
-      console.log('Vamos ver se sair location: ', locationData);
       setNewLocation(locationData);
       return locationData;
 
@@ -153,14 +150,11 @@ const EditRiskPoint = () => {
   // Setar Status como True
   const setStatusTrue = () => {
     setNewStatus(true);
-    console.log('Novo Status', newStatus);
-    console.log('Nova Descrição do Status',newStatusDescription)
   }
 
   // Setar Status como False
   const setStatusFalse = () => {
     setNewStatus( false);
-    console.log('Novo Status', newStatus);
     setNewStatusDescription('');
   }
 
@@ -168,15 +162,12 @@ const EditRiskPoint = () => {
   const handleEditRiskPoint = async() => {
     let riskPoint = {};
 
-    console.log('Entrei em Cadastrar novo PR');
-
     // Montar o objeto
     try{
       const locationData = await getLocation();
 
       if (locationData){
         const { latitude, longitude } = locationData;
-        console.log('locationData: ', locationData);
       }
 
       riskPoint = {
@@ -193,14 +184,10 @@ const EditRiskPoint = () => {
         image: newImage,
       }
 
-      console.log('console do objeto Edit riskPoint', riskPoint)
-
     } catch(err) {
       console.log('Erro na requisição handleRegister', err)
 
     } 
-
-    console.log('Chegando na requisição para atualizar Ponto de Risco', riskPoint);
 
     try{
       const token = await AsyncStorage.getItem('token');
@@ -215,10 +202,7 @@ const EditRiskPoint = () => {
 
       if (response.data){
         Alert.alert('Ponto de Risco atualizado com sucesso!');
-        console.log('Response da API:', response.data);
       }
-
-      console.group('Zerando os estdos')
 
       // Zerar estados
       setNewImage(null);
@@ -228,8 +212,6 @@ const EditRiskPoint = () => {
       setNewDescription('');
       setStatusFalse(false);
       setNewStatusDescription('');
-
-      console.group('indo para home')
 
       navigation.navigate('Home');      
 
@@ -259,19 +241,14 @@ const EditRiskPoint = () => {
   
               if (response.data) {
                 Alert.alert('Ponto de risco deletado com sucesso!');
-                console.log('Response da API:', response.data);
-
                 navigation.navigate('RiskPointList');
-                
               }
             },
           },
         ]
       );
       
-      
     } catch (error) {
-      console.log('Erro na requisição para deletar ponto de risco', error);
       Alert.alert('Erro ao deletar ponto de risco');
     } 
   } 

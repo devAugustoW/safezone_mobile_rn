@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+
 import { Marker } from 'react-native-maps';
 import { StatusBar } from 'expo-status-bar';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -25,29 +26,26 @@ const Home = () => {
     try {
       const token = await AsyncStorage.getItem('token');
 
-      const response = await axios.get(`http://192.168.1.7:3333/getlocations`, {
+      const response = await axios.get(`http://${PORT}:3333/getlocations`, {
         headers: {
           Authorization: `Bearer ${token}`  
         }
       });  
 
       if(response.data){
-        console.log('Token: ', token);
-        console.log('Locations OK: ', response.data)
         setRiskPointLocations(response.data)
 
       } else {
-        console.log('Chamada HOME falhou: ', response.data.message)
+        console.log('Chamada HOME falhou: ', response.data.message);
       }          
 
     } catch (error) {
-      console.error('CATCH: Erro ao buscar pontos de risco:', error);
+      console.log('Erro ao buscar pontos de risco:', error);
     }
   };
    
   useEffect(() => {
     fetchRiskPoints();
-    console.log('Atualiando riskPointLocations:', riskPointLocations);
   }, []);
    
   return (
