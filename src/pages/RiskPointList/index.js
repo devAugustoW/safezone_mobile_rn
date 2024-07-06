@@ -3,7 +3,9 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StatusBar } from 'expo-status-bar';
 import { useFocusEffect } from '@react-navigation/native';
-import { IP_CALL, PORT} from '@env';
+import { 
+  IP_CALL
+} from '@env';
 import {
   ListContainer,
   ScrollView,
@@ -18,7 +20,13 @@ const RiskPointList = () => {
   const fetchRiskPoints = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
-      const response = await axios.get(`http://${IP_CALL}:3333/getriskpoints`); 
+      const response = await axios.get(`http://${IP_CALL}:3333/getriskpoints`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      ); 
       setRiskPoints(response.data);
 
     } catch (error) {

@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Alert, Platform, StatusBar } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { IP_CALL, PORT } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { IP_CALL } from '@env';
 import { 
   Background, 
   Container, 
@@ -21,17 +21,14 @@ export default function SignIn(){
   const [email, setEmail] = useState('dalva@safezone.com');
   const [password, setPassword] = useState('12345');
 
-   const handleLogin = async() => {
-      
-      const user = {
-         email,
-         password
-      }
-      
-      try{
-        
-         const response = await axios.post(`http://${IP_CALL}:3333/login`, user)
-
+  const handleLogin = async() => {
+    const user = {
+      email,
+      password
+    }
+    
+    try{
+      const response = await axios.post(`http://192.168.1.7:${PORT}/login`, user);
 
       if (response.data){
         Alert.alert('Login realizado com sucesso');

@@ -213,7 +213,15 @@ const Register = () => {
     // Fazer a chamada para enviar o Objeto para API
     try{
       const token = await AsyncStorage.getItem('token');
-      const response = await axios.post(`http://${IP_CALL}:3333/create`, riskPoint);
+
+      const response = await axios.post(`http://192.168.1.7:3333/create`, 
+        riskPoint,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
 
       if (response.data){
         Alert.alert('Ponto de Risco cadastrado com sucesso!');

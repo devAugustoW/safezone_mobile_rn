@@ -38,7 +38,13 @@ const PointRiskTag = ({ id, refValue, title, description, status, statusDescript
             text: 'Deletar',
             onPress: async () => {
               const token = await AsyncStorage.getItem('token');
-              const response = await axios.delete(`http://${IP_CALL}:3333/delete/${id}`);
+              const response = await axios.delete(`http://${IP_CALL}:3333/delete/${id}`,
+                {
+                  headers: {
+                    Authorization: `Bearer ${token}`
+                  }
+                }
+              );
   
               if (response.data) {
                 Alert.alert('Ponto de risco deletado com sucesso!');

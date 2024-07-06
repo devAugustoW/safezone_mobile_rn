@@ -7,8 +7,8 @@ import { Cloudinary } from "@cloudinary/url-gen";
 import { 
   CLOUDINARY_CLOUD_NAME, 
   CLOUDINARY_UPLOAD_PRESET,
-  IP_CALL,
-  PORT 
+  IP_CALL, 
+  PORT
 } from '@env';
 import Feather from 'react-native-vector-icons/Feather';
 import { Alert, Image } from 'react-native';
@@ -80,7 +80,6 @@ const EditRiskPoint = () => {
   }
 
   const pickImage  = async() => {
-
     // Solicitar permissão para a câmera
     const cameraPermission = await ImagePicker.requestCameraPermissionsAsync();
     if (cameraPermission.status !== 'granted') {
@@ -190,13 +189,16 @@ const EditRiskPoint = () => {
 
     } 
 
-    
-
     try{
       const token = await AsyncStorage.getItem('token');
-      const response = await axios.put(`http://${IP_CALL}:3333/update`, riskPoint, {
-        method: 'PUT', 
-      });
+      const response = await axios.put(`http://192.168.1.7:3333/update/${id}`,
+        riskPoint,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       if (response.data){
         Alert.alert('Ponto de Risco atualizado com sucesso!');
@@ -235,8 +237,14 @@ const EditRiskPoint = () => {
           {
             text: 'Deletar',
             onPress: async () => {
-              
-              const response = await axios.delete(`http://${IP_CALL}:${PORT}/delete/${id}`);
+              const token = await AsyncStorage.getItem('token');
+              const response = await axios.delete(`http://${IP_CALL}:3333/delete/${id}`,
+                {
+                  headers: {
+                    Authorization: `Bearer ${token}`
+                  }
+                }
+              );
   
               if (response.data) {
                 Alert.alert('Ponto de risco deletado com sucesso!');
