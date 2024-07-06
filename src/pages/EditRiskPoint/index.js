@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import { Cloudinary } from "@cloudinary/url-gen";
@@ -53,13 +54,8 @@ const EditRiskPoint = () => {
   const [newLocation, setNewLocation] = useState(location);
 
   
-
-  console.log('ENTREI EM EDITAR, statusDescription: ', statusDescription);
-  
   //fazer upload de imagem
   const photoUpload = async (newImage) => {
-
-    console.log('Iniciando upload de imagem no Cloudinary', newImage)
 
     const dataImage = new FormData();
     dataImage.append('file', newImage);
@@ -74,7 +70,6 @@ const EditRiskPoint = () => {
       const resultImage = await res.json();
 
       setNewImage(resultImage.url);
-      console.log('Cadastro OK - URL imgame: ', resultImage.url);
 
       return resultImage.url;
 
@@ -85,7 +80,6 @@ const EditRiskPoint = () => {
   }
 
   const pickImage  = async() => {
-    console.log('PickImage do editar');
 
     // Solicitar permissão para a câmera
     const cameraPermission = await ImagePicker.requestCameraPermissionsAsync();
@@ -94,16 +88,12 @@ const EditRiskPoint = () => {
       return;
     }
 
-    console.log('Autorizado');
-
     // Solicitar permissão para a galeria de fotos (escrita e leitura)
     const mediaLibraryPermission = await ImagePicker.requestMediaLibraryPermissionsAsync();
     if (mediaLibraryPermission.status !== 'granted') {
       Alert.alert('Permissão necessária', 'Desculpe, precisamos da permissão para salvar fotos no álbum!');
       return;
     }
-
-    console.log('Aqui 3');
 
     // Abrir a câmera
     const photo = await ImagePicker.launchCameraAsync({
@@ -115,7 +105,6 @@ const EditRiskPoint = () => {
 
     if (photo) {
       setNewImage(photo.uri);
-      console.log('Imagem capturada e salva:', photo);
   
       // Criar um novo arquivo para upload
       let newFile = {
@@ -123,8 +112,6 @@ const EditRiskPoint = () => {
         type: photo.assets[0].mimeType,
         name: photo.assets[0].fileName,
       };
-  
-      console.log('Dados principais da nova foto:', newFile);
   
       // Enviar a nova foto para upload
       photoUpload(newFile);
@@ -140,39 +127,35 @@ const EditRiskPoint = () => {
     try {
       let { status } = await Location.requestForegroundPermissionsAsync();
       if (status !== 'granted') {
-        setError('Permissão de Geolocalização negada!');
-        console.log('Permissão de Geolocalização negada!');
-        return null;
+        Alert.alert('Permissão de Geolocalização negada!');
+        return;
       }
 
       let locationPoint = await Location.getCurrentPositionAsync({});
+
       const locationData = {
         latitude: locationPoint.coords.latitude,
         longitude: locationPoint.coords.longitude,
       };
 
-      console.log('Vamos ver se sair location: ', locationData);
       setNewLocation(locationData);
       return locationData;
 
     } catch (err) {
-      setError('Erro ao obter localização!');
-      console.log('Erro ao obter localização!', err);
-      return null;
+      Alert.alert('Erro ao obter localização!');
+      return;
+
     }
   }
 
   // Setar Status como True
   const setStatusTrue = () => {
     setNewStatus(true);
-    console.log('Novo Status', newStatus);
-    console.log('Nova Descrição do Status',newStatusDescription)
   }
 
   // Setar Status como False
   const setStatusFalse = () => {
     setNewStatus( false);
-    console.log('Novo Status', newStatus);
     setNewStatusDescription('');
   }
 
@@ -180,15 +163,12 @@ const EditRiskPoint = () => {
   const handleEditRiskPoint = async() => {
     let riskPoint = {};
 
-    console.log('Entrei em Cadastrar novo PR');
-
     // Montar o objeto
     try{
       const locationData = await getLocation();
 
       if (locationData){
         const { latitude, longitude } = locationData;
-        console.log('locationData: ', locationData);
       }
 
       riskPoint = {
@@ -205,26 +185,22 @@ const EditRiskPoint = () => {
         image: newImage,
       }
 
-      console.log('console do objeto Edit riskPoint', riskPoint)
-
     } catch(err) {
       console.log('Erro na requisição handleRegister', err)
 
     } 
 
-    console.log('Chegando na requisição para atualizar Ponto de Risco', riskPoint);
+    
 
     try{
-      const response = await axios.put(`http://${IP_CALL}:${PORT}/update`, riskPoint, {
+      const token = await AsyncStorage.getItem('token');
+      const response = await axios.put(`http://${IP_CALL}:3333/update`, riskPoint, {
         method: 'PUT', 
       });
 
       if (response.data){
         Alert.alert('Ponto de Risco atualizado com sucesso!');
-        console.log('Response da API:', response.data);
       }
-
-      console.group('Zerando os estdos')
 
       // Zerar estados
       setNewImage(null);
@@ -234,8 +210,6 @@ const EditRiskPoint = () => {
       setNewDescription('');
       setStatusFalse(false);
       setNewStatusDescription('');
-
-      console.group('indo para home')
 
       navigation.navigate('Home');      
 
@@ -266,19 +240,14 @@ const EditRiskPoint = () => {
   
               if (response.data) {
                 Alert.alert('Ponto de risco deletado com sucesso!');
-                console.log('Response da API:', response.data);
-
                 navigation.navigate('RiskPointList');
-                
               }
             },
           },
         ]
       );
       
-      
     } catch (error) {
-      console.log('Erro na requisição para deletar ponto de risco', error);
       Alert.alert('Erro ao deletar ponto de risco');
     } 
   } 

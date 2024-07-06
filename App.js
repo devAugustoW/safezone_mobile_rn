@@ -22,6 +22,7 @@ function App() {
             headerShown: false,
           }}
         />
+
         <Stack.Screen 
           name="Home"
           component={Home}
@@ -29,6 +30,7 @@ function App() {
             headerShown: false,
           }}
         />
+
         <Stack.Screen 
           name="Register" 
           component={Register} 
@@ -36,6 +38,9 @@ function App() {
             headerShown: false,
           }} 
         />
+
+
+        
         <Stack.Screen 
           name="RiskPointList" 
           component={RiskPointList} 

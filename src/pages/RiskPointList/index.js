@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useCallback  } from 'react'
+import React, { useState, useEffect, useCallback  } from 'react';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StatusBar } from 'expo-status-bar';
 import { useFocusEffect } from '@react-navigation/native';
 import { IP_CALL, PORT} from '@env';
@@ -14,15 +15,14 @@ import PointRiskTag from '../../assets/component/PointRiskTag/index.js';
 const RiskPointList = () => {
   const [riskPoints, setRiskPoints] = useState([]);
 
-  console.log('ENTROU NA PÁGINA LISTAR PR')
-
   const fetchRiskPoints = async () => {
     try {
-      const response = await axios.get(`http://${IP_CALL}:${PORT}/getriskpoints`); 
+      const token = await AsyncStorage.getItem('token');
+      const response = await axios.get(`http://${IP_CALL}:3333/getriskpoints`); 
       setRiskPoints(response.data);
-      console.log('GET em pontos de risco ', response.data);
+
     } catch (error) {
-      console.error('Erro ao buscar pontos de risco:', error);
+      Alert.alert('Erro ao buscar pontos de risco:', error);
     }
   };
 
@@ -31,6 +31,7 @@ const RiskPointList = () => {
       fetchRiskPoints();
     }, [])
   );
+  
   const handleDeleteRiskPoint = (id) => {
     setRiskPoints(prevRiskPoints => prevRiskPoints.filter(point => point._id !== id));
   };
