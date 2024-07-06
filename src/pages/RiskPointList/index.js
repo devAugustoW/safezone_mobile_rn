@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback  } from 'react'
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { StatusBar } from 'expo-status-bar';
 import { useFocusEffect } from '@react-navigation/native';
 import { 
@@ -20,7 +21,14 @@ const RiskPointList = () => {
 
   const fetchRiskPoints = async () => {
     try {
-      const response = await axios.get(`http://${IP_CALL}:3333/getriskpoints`); 
+      const token = await AsyncStorage.getItem('token');
+      const response = await axios.get(`http://${IP_CALL}:3333/getriskpoints`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      ); 
       setRiskPoints(response.data);
       console.log('GET em pontos de risco ', response.data);
     } catch (error) {
@@ -33,6 +41,7 @@ const RiskPointList = () => {
       fetchRiskPoints();
     }, [])
   );
+  
   const handleDeleteRiskPoint = (id) => {
     setRiskPoints(prevRiskPoints => prevRiskPoints.filter(point => point._id !== id));
   };

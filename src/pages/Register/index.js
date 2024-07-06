@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Keyboard } from 'react-native';
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import { Cloudinary } from "@cloudinary/url-gen";
@@ -94,13 +95,11 @@ const Register = () => {
       console.log('Erro na requisição fetch ', err);
 
     }
-
     return image;
   }
 
   // Tirar foto
   const pickImage  = async() => {
-
     // Solicitar permissão para a câmera
     const cameraPermission = await ImagePicker.requestCameraPermissionsAsync();
     if (cameraPermission.status !== 'granted') {
@@ -118,7 +117,7 @@ const Register = () => {
       quality: 0.5,
     });
 
-    console.log('Acho que salvou a foto', photo)
+    console.log('Salvou foto no CLoudinary', photo)
 
     let newFile = {
       uri: photo.assets[0].uri,
@@ -174,7 +173,7 @@ const Register = () => {
   const handleRegister = async() => {
     let riskPoint = {};
 
-    console.log('Entrou no handleLocation')
+    console.log('Entrou no Registrar Ponto de Risco.')
 
     // Montar o objeto
     try{
@@ -185,7 +184,6 @@ const Register = () => {
 
       if (locationData){
         const { latitude, longitude } = locationData;
-
       }
 
       console.log('locationData OK!')
@@ -210,18 +208,27 @@ const Register = () => {
 
     } 
 
-    console.log('Chegando na requisição para API')
+    console.log('CHAMADA API INSERIR PONTO DE RISCO')
 
     // Fazer a chamada para enviar o Objeto para API
     try{
-      const response = await axios.post(`http://${IP_CALL}:3333/create`, riskPoint);
+      const token = await AsyncStorage.getItem('token');
+
+      const response = await axios.post(`http://192.168.1.7:3333/create`, 
+        riskPoint,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      );
 
       if (response.data){
-        Alert.alert('Ponto de Risco criado com sucesso!');
-        console.log('Response da API:', response.data);
+        Alert.alert('Ponto de Risco cadastrado com sucesso!');
+        console.log('Ponto de Risco Cadastrado:', response.data);
       }
 
-      console.group('Zerando os estdos')
+      console.log('Zerando os estdos');
 
       // Zerar estados
       setImage(null);
@@ -231,7 +238,7 @@ const Register = () => {
       setDescription('');
       setStatus(false);
       setstatusDescription('');
-      console.log('Inputs zerados, indo para Home')
+      console.log('Inputs zerados, indo para Home');
 
       navigation.navigate('Home');      
 
@@ -240,7 +247,6 @@ const Register = () => {
     }   
   }
 
-    
   return (
     <RegisterContainer>
       <ScrollArea>

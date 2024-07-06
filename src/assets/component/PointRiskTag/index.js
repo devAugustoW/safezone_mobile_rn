@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from 'axios';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import Feather from 'react-native-vector-icons/Feather';
 import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
@@ -36,7 +37,14 @@ const PointRiskTag = ({ id, refValue, title, description, status, statusDescript
           {
             text: 'Deletar',
             onPress: async () => {
-              const response = await axios.delete(`http://${IP_CALL}:3333/delete/${id}`);
+              const token = await AsyncStorage.getItem('token');
+              const response = await axios.delete(`http://${IP_CALL}:3333/delete/${id}`,
+                {
+                  headers: {
+                    Authorization: `Bearer ${token}`
+                  }
+                }
+              );
   
               if (response.data) {
                 Alert.alert('Ponto de risco deletado com sucesso!');
