@@ -191,7 +191,7 @@ const EditRiskPoint = () => {
 
     try{
       const token = await AsyncStorage.getItem('token');
-      const response = await axios.put(`http://192.168.1.7:3333/update/${id}`,
+      const response = await axios.put(`http://${IP_CALL}:3333/update/${id}`,
         riskPoint,
         {
           headers: {
