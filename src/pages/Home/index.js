@@ -4,12 +4,8 @@ import { useNavigation } from '@react-navigation/native';
 
 import { Marker } from 'react-native-maps';
 import { StatusBar } from 'expo-status-bar';
-<<<<<<< HEAD
-import { IP_CALL, PORT } from '@env';
-=======
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { PORT } from '@env';
->>>>>>> 7da4347b1ee910d3a6cb159e11e6a50d68a7a408
 import Feather from 'react-native-vector-icons/Feather';
 import { 
   Background, 
@@ -27,17 +23,14 @@ const Home = () => {
 
   const fetchRiskPoints = async () => {
 
-<<<<<<< HEAD
-      try {
-        const token = await AsyncStorage.getItem('token');
-        const response = await axios.get(`http://${IP_CALL}:${PORT}/getlocations`); 
-=======
+    try {
+      const token = await AsyncStorage.getItem('token');
+
       const response = await axios.get(`http://${PORT}:3333/getlocations`, {
         headers: {
           Authorization: `Bearer ${token}`  
         }
       });  
->>>>>>> 7da4347b1ee910d3a6cb159e11e6a50d68a7a408
 
       if(response.data){
         setRiskPointLocations(response.data)
