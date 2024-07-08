@@ -5,8 +5,8 @@
 
 ## Descrição 📋
 
-SafeZone é um aplicativo mobile desenvolvido para auxiliar no gerenciamento de pontos de risco em obras e indústrias. <br>
-Construído com React Native, ele permite registrar e visualizar facilmente áreas que requerem atenção especial para a segurança dos trabalhadores.
+SafeZone é um aplicativo mobile desenvolvido para auxiliar no gerenciamento de pontos de risco em obras e indústrias.
+Efeito em React Native, O SafeZone permite registrar e visualizar facilmente áreas que requerem atenção especial para a segurança dos trabalhadores. Além de trabalhar com API que faz criptogria de senhas e autenticação JWT para usuários logados.
 
 <br>
 <br>
@@ -33,6 +33,15 @@ Construído com React Native, ele permite registrar e visualizar facilmente áre
 5. **Remoção de pontos de risco**
 
 <br>
+<br>
+
+## Seguraça e Autenticação 🔒
+
+O SafeZone agora oferece recursos de segurança aprimorados com:
+
+1. **Criptografia de senha Bcrypt:** As senhas dos usuários são armazenadas com segurança usando criptografia Bcrypt, protegendo-as contra acessos não autorizados. <br>
+2. **Autenticação JWT:** A autenticação JWT é usada para controlar o acesso aos recursos do aplicativo, garantindo que apenas usuários autorizados possam acessá-los.
+
 <br>
 
 ## Pré-requisitos 📦
